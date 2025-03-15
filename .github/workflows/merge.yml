@@ -4,11 +4,12 @@ env:
 on:
     pull_request:
         types: [closed]
+    workflow_dispatch:
 
 jobs:
     merge_build_on_linux:
         runs-on: ubuntu-20.04
-        if: github.event.pull_request.merged == true
+        if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@master
@@ -58,7 +59,7 @@ jobs:
 
     merge_build_on_mac:
         runs-on: macos-13
-        if: github.event.pull_request.merged == true
+        if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@master
@@ -84,7 +85,7 @@ jobs:
 
     merge_build_on_win:
         runs-on: ${{ matrix.os }}
-        if: github.event.pull_request.merged == true
+        if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
         strategy:
           matrix:
             os: [windows-2019, windows-2022]
